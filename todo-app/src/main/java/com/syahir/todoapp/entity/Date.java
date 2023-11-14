@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.UUID;
 
 @Data
@@ -24,11 +27,17 @@ public class Date {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Date_id_sequence")
     private Long id;
 
-    @NotBlank(message = "Start date may not be blank")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
+    private LocalDate startDate = LocalDate.now();
 
-    @NotBlank(message = "Start time may not be blank")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startTime;
+    private LocalTime utilTime = LocalTime.now();
+
+//    @Temporal(TemporalType.DATE)
+//    private java.util.Date startDate = new java.util.Date() ;
+//
+//    @Temporal(TemporalType.TIME)
+//    private java.util.Date utilTime = new java.util.Date();
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private java.util.Date utilTimeStamp = new java.util.Date();
+
 }
