@@ -34,4 +34,9 @@ public class DateServiceImpl implements DateService {
     public Optional<Date> findById(Long id) {
         return dateRepository.findById(id);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        dateRepository.deleteById(id);
+    }
 }

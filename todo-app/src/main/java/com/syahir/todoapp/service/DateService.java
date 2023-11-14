@@ -11,4 +11,6 @@ public interface DateService {
     List<Date> findAll();
 
     Optional<Date> findById(Long id);
+
+    void deleteById(Long id);
 }

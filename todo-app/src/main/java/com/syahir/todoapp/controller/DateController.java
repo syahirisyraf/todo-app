@@ -50,5 +50,12 @@ public class DateController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Delete date by id
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity deleteDate(@PathVariable("id") Long id){
+        dateService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }
