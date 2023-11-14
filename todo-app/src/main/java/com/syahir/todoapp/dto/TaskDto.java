@@ -16,5 +16,5 @@ public class TaskDto {
     private String title;
     private String description;
     private TaskStatus status;
-    private Date date;
+    private DateDto date;
 }
