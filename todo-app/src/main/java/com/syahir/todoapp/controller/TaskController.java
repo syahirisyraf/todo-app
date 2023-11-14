@@ -21,9 +21,9 @@ public class TaskController {
     // Create task
     @PostMapping
     public ResponseEntity<TaskDto> createUpdateTask(@RequestBody TaskDto taskDto){
-        Task task = taskMapper.mapFrom(taskDto);
-        Task saveTask = taskService.saveTask(task);
-        return new ResponseEntity<>(taskMapper.mapTo(saveTask), HttpStatus.CREATED);
+            Task task = taskMapper.mapFrom(taskDto);
+            Task saveTask = taskService.saveTask(task);
+            return new ResponseEntity<>(taskMapper.mapTo(saveTask), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -40,6 +40,16 @@ public class TaskController {
             // create new
             return new ResponseEntity<>(savedTaskDto, HttpStatus.CREATED);
         }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskDto> partialUpdateBook(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
+        if(!taskService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Task task = taskMapper.mapFrom(taskDto);
+        Task updatedTask = taskService.partialUpdate(id, task);
+        return new ResponseEntity<>(taskMapper.mapTo(updatedTask), HttpStatus.OK);
     }
 
 }

@@ -8,4 +8,6 @@ public interface TaskService {
     Task createUpdateTask(Long id, Task task);
 
     Task saveTask(Task task);
+
+    Task partialUpdate(Long id, Task task);
 }

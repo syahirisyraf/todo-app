@@ -2,12 +2,11 @@ package com.syahir.todoapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -28,10 +27,10 @@ public class Task {
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "cannot be null")
     private TaskStatus status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "date_id")
     private Date date;
-
 }
