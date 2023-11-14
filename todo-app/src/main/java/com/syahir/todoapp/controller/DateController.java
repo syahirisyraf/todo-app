@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,6 +38,16 @@ public class DateController {
         return dates.stream()
                 .map(dateMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    // Get date by id
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<DateDto> getDateById(@PathVariable("id") Long id){
+        Optional<Date> foundDate = dateService.findById(id);
+        return foundDate.map(date -> {
+            DateDto dateDto = dateMapper.mapTo(date);
+            return new ResponseEntity<>(dateDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 
