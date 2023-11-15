@@ -77,4 +77,11 @@ public class TaskController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // delete task by id
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTask(@PathVariable("id") Long id){
+        taskService.deleteById(id);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 }
