@@ -2,6 +2,7 @@ package com.syahir.todoapp.controller;
 
 import com.syahir.todoapp.dto.TaskDto;
 import com.syahir.todoapp.entity.Task;
+import com.syahir.todoapp.exception.ResourceNotFoundException;
 import com.syahir.todoapp.mapper.Mapper;
 import com.syahir.todoapp.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,18 +71,45 @@ public class TaskController {
     // get task by id
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getTaskById(@PathVariable("id") Long id){
+
+        // without exception handling
+//        Optional<Task> foundTask = taskService.findById(id);
+//        return foundTask.map(task -> {
+//            TaskDto taskDto = taskMapper.mapTo(task);
+//            return new ResponseEntity<>(taskDto, HttpStatus.OK);
+//        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+//        Optional<Task> foundTask = taskService.findById(id);
+//        if(!foundTask.isPresent()){
+//            throw new RuntimeException(String.format("Task with ID %s not found", id));
+//        }
+//        return
+
+        // with exception handling
         Optional<Task> foundTask = taskService.findById(id);
         return foundTask.map(task -> {
             TaskDto taskDto = taskMapper.mapTo(task);
             return new ResponseEntity<>(taskDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseThrow(() -> new ResourceNotFoundException(String.format("Task with ID %s not found", id)));
+
     }
 
     // delete task by id
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity deleteTask(@PathVariable("id") Long id){
+//        taskService.deleteById(id);
+//        return new ResponseEntity(HttpStatus.NOT_FOUND);
+//    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteTask(@PathVariable("id") Long id){
-        taskService.deleteById(id);
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    public ResponseEntity<TaskDto> deleteTaskById(@PathVariable("id") Long id){
+        Optional<Task> foundTask = taskService.findById(id);
+        if (!foundTask.isPresent()){
+            throw new ResourceNotFoundException(String.format("Task with Id %s not found and cannot be deleted", id));
+        }else {
+            taskService.deleteById(id);
+            return new ResponseEntity("Task with Id " + id +  " successfully delete",HttpStatus.NOT_FOUND);
+        }
     }
 
 }
