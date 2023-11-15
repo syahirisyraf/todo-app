@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
@@ -26,6 +30,7 @@ public class TaskController {
             return new ResponseEntity<>(taskMapper.mapTo(saveTask), HttpStatus.CREATED);
     }
 
+    // Update task
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> createUpdateTask(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
         Task task = taskMapper.mapFrom(taskDto);
@@ -42,6 +47,7 @@ public class TaskController {
         }
     }
 
+    // partial update task
     @PatchMapping("/{id}")
     public ResponseEntity<TaskDto> partialUpdateBook(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
         if(!taskService.isExists(id)){
@@ -50,6 +56,25 @@ public class TaskController {
         Task task = taskMapper.mapFrom(taskDto);
         Task updatedTask = taskService.partialUpdate(id, task);
         return new ResponseEntity<>(taskMapper.mapTo(updatedTask), HttpStatus.OK);
+    }
+
+    // get all task
+    @GetMapping
+    public List<TaskDto> listTasks(){
+        List<Task> tasks = taskService.findAll();
+        return tasks.stream()
+                .map(taskMapper::mapTo)
+                .collect(Collectors.toList());
+    }
+
+    // get task by id
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable("id") Long id){
+        Optional<Task> foundTask = taskService.findById(id);
+        return foundTask.map(task -> {
+            TaskDto taskDto = taskMapper.mapTo(task);
+            return new ResponseEntity<>(taskDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }
