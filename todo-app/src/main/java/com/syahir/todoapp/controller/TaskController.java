@@ -6,6 +6,8 @@ import com.syahir.todoapp.exception.ResourceNotFoundException;
 import com.syahir.todoapp.mapper.Mapper;
 import com.syahir.todoapp.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +54,8 @@ public class TaskController {
     @PatchMapping("/{id}")
     public ResponseEntity<TaskDto> partialUpdateBook(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
         if(!taskService.isExists(id)){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            //return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(String.format("Task with ID %s not found", id));
         }
         Task task = taskMapper.mapFrom(taskDto);
         Task updatedTask = taskService.partialUpdate(id, task);
@@ -92,6 +95,13 @@ public class TaskController {
             return new ResponseEntity<>(taskDto, HttpStatus.OK);
         }).orElseThrow(() -> new ResourceNotFoundException(String.format("Task with ID %s not found", id)));
 
+    }
+
+    // pagination
+    @GetMapping("/page")
+    public Page<TaskDto> listPageBooks(Pageable pageable){
+        Page<Task> tasks = taskService.findAllPagable(pageable);
+        return tasks.map(taskMapper::mapTo);
     }
 
     // delete task by id

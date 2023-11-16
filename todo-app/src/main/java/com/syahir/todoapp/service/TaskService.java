@@ -1,6 +1,8 @@
 package com.syahir.todoapp.service;
 
 import com.syahir.todoapp.entity.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +21,6 @@ public interface TaskService {
     Optional<Task> findById(Long id);
 
     void deleteById(Long id);
+
+    Page<Task> findAllPagable(Pageable pageable);
 }

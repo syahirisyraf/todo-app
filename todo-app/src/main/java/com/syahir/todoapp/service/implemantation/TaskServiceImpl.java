@@ -4,6 +4,8 @@ import com.syahir.todoapp.entity.Task;
 import com.syahir.todoapp.repository.TaskRepository;
 import com.syahir.todoapp.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +62,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Task> findAllPagable(Pageable pageable) {
+        return taskRepository.findAll(pageable);
     }
 }
