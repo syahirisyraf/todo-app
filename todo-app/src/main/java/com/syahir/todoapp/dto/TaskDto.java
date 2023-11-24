@@ -1,11 +1,9 @@
 package com.syahir.todoapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.syahir.todoapp.entity.Date;
 import com.syahir.todoapp.entity.TaskStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +14,6 @@ public class TaskDto {
     private String title;
     private String description;
     private TaskStatus status;
+    @JsonBackReference
     private DateDto date;
 }

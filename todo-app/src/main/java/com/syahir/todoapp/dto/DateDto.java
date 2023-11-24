@@ -1,12 +1,12 @@
 package com.syahir.todoapp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Builder
 public class DateDto {
     private Long id;
-    private LocalDate startDate;
-    private LocalDateTime startTime;
+    private LocalDate startDate = LocalDate.now();
+    private LocalTime utilTime = LocalTime.now();
+    @JsonManagedReference
+    private List<TaskDto> task;
 }
