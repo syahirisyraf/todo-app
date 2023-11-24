@@ -5,10 +5,12 @@ import com.syahir.todoapp.entity.Date;
 import com.syahir.todoapp.mapper.Mapper;
 import com.syahir.todoapp.service.DateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +50,15 @@ public class DateController {
             DateDto dateDto = dateMapper.mapTo(date);
             return new ResponseEntity<>(dateDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    // Get date by start date
+    @GetMapping("/by-date")
+    public List<DateDto> findByStartDate(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate){
+        List<Date> foundByStartDate = dateService.findByStartDate(startDate);
+        return foundByStartDate.stream()
+                .map(dateMapper::mapTo)
+                .collect(Collectors.toList());
     }
 
     // Delete date by id
