@@ -1,18 +1,13 @@
 package com.syahir.todoapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
+
 
 @Data
 @AllArgsConstructor
@@ -28,7 +23,7 @@ public class Date {
 
     private LocalDate startDate = LocalDate.now();
 
-    private LocalTime utilTime = LocalTime.now();
+    //private LocalTime utilTime = LocalTime.now();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "date", cascade = CascadeType.ALL)
     @JsonManagedReference

@@ -23,4 +23,6 @@ public interface TaskService {
     void deleteById(Long id);
 
     Page<Task> findAllPagable(Pageable pageable);
+
+    //long countTasksByStatus(TaskStatus status);
 }
